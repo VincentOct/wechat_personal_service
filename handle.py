@@ -5,7 +5,7 @@ import hashlib
 import web
 
 
-_token = input('Enter the token.')
+# _token = input('Enter the token.')
 
 
 class Handle:
@@ -18,7 +18,7 @@ class Handle:
             timestamp = data.timestamp
             nonce = data.nonce
             echostr = data.echostr
-            token = _token
+            token = 'hello2019'
             alist = [token, timestamp, nonce]
             alist.sort()
             sha1 = hashlib.sha1()
