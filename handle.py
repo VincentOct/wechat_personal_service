@@ -21,8 +21,9 @@ class Handle:
             token = 'hello2019'
             alist = [token, timestamp, nonce]
             alist.sort()
+            rawstr = ''.join(alist)
             sha1 = hashlib.sha1()
-            map(sha1.update, alist)
+            sha1.update(rawstr.encode('utf-8'))
             hashcode = sha1.hexdigest()
             print("handle/GET func: hashcode, signature: ", hashcode, signature)
             if hashcode == signature:
