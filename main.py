@@ -9,7 +9,7 @@ urls = (
 
 
 class Handle:
-    def get(self):
+    def GET(self):
         return 'Hello, this is a text msg.'
 
 
