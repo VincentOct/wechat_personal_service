@@ -6,10 +6,6 @@ import web
 import receive
 import reply
 
-
-# _token = input('Enter the token.')
-
-
 class Handle:
     def GET(self):
         try:
