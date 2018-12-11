@@ -100,7 +100,7 @@ def result_to_string(aresult):
         else:
             none_status_book += 1
     content_1 = '\n'.join(result_string)
-    content_2 = '\n本服务只显示雁塔校区图书馆中，状态为【可借】的书目。\n不符合条件的{}册图书已被过滤。'.format(none_status_book)
+    content_2 = '\n本服务只显示雁塔校区图书馆中，状态为[可借]的书目。\n不符合条件的 {} 册图书已被过滤。'.format(none_status_book)
     content_0 = content_1 + content_2 if content_2 else content_1
     return content_0
 

@@ -55,6 +55,7 @@ def wechat_check():
                                      createtime=int(time.time()), content=reply_content)
         response = make_response(reply_xml)
         response.content_type = 'application/xml'
+        return response
 
 
 if __name__ == '__main__':
