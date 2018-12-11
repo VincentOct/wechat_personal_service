@@ -2,6 +2,7 @@
 
 import hashlib
 from flask import Flask, request, make_response
+from xml.etree import ElementTree as ET
 import time
 
 
@@ -14,7 +15,7 @@ def greeting():
     return 'Hello! This is my wechat service. | [Power by Flask]'
 
 
-@app.route('/wx', methods=['GET'])
+@app.route('/wx', methods=['GET', 'POST'])
 def wechat_check():
     if request.method == 'GET':
         token = 'zhangyu'
@@ -33,6 +34,13 @@ def wechat_check():
             return make_response(echostr)
         else:
             return None
+    if request.method == 'POST':
+        print(request.data)
+        xml_recv = ET.fromstring(request.data)
+        ToUserName = xml_recv.find("ToUserName").text
+        FromUserName = xml_recv.find("FromUserName").text
+        Content = xml_recv.find("Content").text
+        print(ToUserName, FromUserName, Content)
 
 
 if __name__ == '__main__':
