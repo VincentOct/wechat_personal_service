@@ -3,6 +3,7 @@
 import hashlib
 from flask import Flask, request, make_response
 from xml.etree import ElementTree as ET
+from library import *
 import time
 
 
@@ -35,18 +36,22 @@ def wechat_check():
         else:
             return None
     if request.method == 'POST':
-        print(request.data)
         xml_recv = ET.fromstring(request.data)
-        to_user = xml_recv.find("ToUserName").text
-        from_user = xml_recv.find("FromUserName").text
-        content = xml_recv.find("Content").text
-        # print(to_user, from_user, content)
-        reply_str = """<xml><ToUserName><![CDATA[{to_user}]]></ToUserName><FromUserName><![CDATA[{from_user}]]></FromUserName><CreateTime>{createtime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{content}]]></Content></xml>"""
-        reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
-                                     createtime=int(time.time()), content=content)
-        response = make_response(reply_xml)
-        response.content_type = 'application/xml'
-        return response
+        if xml_recv.find("MsgType").text == 'text':
+            to_user = xml_recv.find("ToUserName").text
+            from_user = xml_recv.find("FromUserName").text
+            come_content = xml_recv.find("Content").text
+            reply_str = "<xml><ToUserName><![CDATA[{to_user}]]></ToUserName><FromUserName><![CDATA[{" \
+                        "from_user}]]></FromUserName><CreateTime>{createtime}</CreateTime><MsgType><![CDATA[" \
+                        "text]]></MsgType><Content><![CDATA[{content}]]></Content></xml> "
+            reply_content = book_main(come_content)
+            reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
+                                         createtime=int(time.time()), content=reply_content)
+            response = make_response(reply_xml)
+            response.content_type = 'application/xml'
+            return response
+        else:
+            return make_response(u'暂只支持文字信息')
 
 
 if __name__ == '__main__':
