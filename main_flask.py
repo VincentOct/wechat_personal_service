@@ -37,27 +37,24 @@ def wechat_check():
             return None
     if request.method == 'POST':
         xml_recv = ET.fromstring(request.data)
-        print(xml_recv.find("MsgType").text)
+        to_user = xml_recv.find("ToUserName").text
+        from_user = xml_recv.find("FromUserName").text
         if xml_recv.find("MsgType").text == 'text':
-            print('recieved post msg.')
-            to_user = xml_recv.find("ToUserName").text
-            from_user = xml_recv.find("FromUserName").text
             come_content = xml_recv.find("Content").text
             if come_content[:5] == '图书检索-':
                 bookname = come_content[5:]
+                reply_content = book_main(bookname)
             else:
-                return make_response(u'格式输入有误\n应输入 图书检索-【书名】\n如 图书检索-挪威的森林')
-            reply_str = "<xml><ToUserName><![CDATA[{to_user}]]></ToUserName><FromUserName><![CDATA[{" \
-                        "from_user}]]></FromUserName><CreateTime>{createtime}</CreateTime><MsgType><![CDATA[" \
-                        "text]]></MsgType><Content><![CDATA[{content}]]></Content></xml> "
-            reply_content = book_main(bookname)
-            reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
-                                         createtime=int(time.time()), content=reply_content)
-            response = make_response(reply_xml)
-            response.content_type = 'application/xml'
-            return response
+                reply_content = u'格式输入有误\n应输入 图书检索-【书名】\n如 图书检索-挪威的森林'
         else:
-            return make_response(u'暂只支持文字信息')
+            reply_content = make_response(u'暂只支持文字信息')
+        reply_str = "<xml><ToUserName><![CDATA[{to_user}]]></ToUserName><FromUserName><![CDATA[{" \
+                    "from_user}]]></FromUserName><CreateTime>{createtime}</CreateTime><MsgType><![CDATA[" \
+                    "text]]></MsgType><Content><![CDATA[{content}]]></Content></xml> "
+        reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
+                                     createtime=int(time.time()), content=reply_content)
+        response = make_response(reply_xml)
+        response.content_type = 'application/xml'
 
 
 if __name__ == '__main__':
