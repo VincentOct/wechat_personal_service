@@ -41,10 +41,14 @@ def wechat_check():
             to_user = xml_recv.find("ToUserName").text
             from_user = xml_recv.find("FromUserName").text
             come_content = xml_recv.find("Content").text
+            if come_content[:5] == '图书检索-':
+                bookname = come_content[5:]
+            else:
+                return make_response(u'格式输入有误\n应输入 图书检索-【书名】\n如 图书检索-挪威的森林')
             reply_str = "<xml><ToUserName><![CDATA[{to_user}]]></ToUserName><FromUserName><![CDATA[{" \
                         "from_user}]]></FromUserName><CreateTime>{createtime}</CreateTime><MsgType><![CDATA[" \
                         "text]]></MsgType><Content><![CDATA[{content}]]></Content></xml> "
-            reply_content = book_main(come_content)
+            reply_content = book_main(bookname)
             reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
                                          createtime=int(time.time()), content=reply_content)
             response = make_response(reply_xml)

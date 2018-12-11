@@ -72,7 +72,7 @@ def get_book_detail(book_info):
         for book_tr in book_trs:
             if book_tr.contents[9].get_text(strip=True) in checkout_status:
                 if book_tr.contents[7].get_text(strip=True) not in bookbase_status:
-                    book_info['status'].append(book_tr.get_text('||', strip=True))
+                    book_info['status'].append(book_tr.get_text(' | ', strip=True))
         return book_info
     except requests.RequestException as e:
         print('Something Wrong Happended.')
@@ -100,7 +100,7 @@ def result_to_string(aresult):
         else:
             none_status_book += 1
     content_1 = '\n'.join(result_string)
-    content_2 = '\nAnd there are {} book(s) have no status information.'.format(none_status_book)
+    content_2 = '\n本服务只显示雁塔校区图书馆中，状态为【可借】的书目。\n不符合条件的{}册图书已被过滤。'.format(none_status_book)
     content_0 = content_1 + content_2 if content_2 else content_1
     return content_0
 
