@@ -3,8 +3,8 @@
 
 import hashlib
 import web
-import receive
-import reply
+import lxml
+
 
 class Handle:
     def GET(self):
@@ -33,16 +33,7 @@ class Handle:
 
     def POST(self):
         try:
-            webData = web.data()
-            recMsg = receive.parse_xml(webData)
-            if isinstance(recMsg, receive.Msg):
-                toUser = recMsg.FromUserName
-                fromUser = recMsg.ToUserName
-                if recMsg.MsgType == 'text':
-                    reply_content = 'post test text'
-                else:
-                    reply_content = 'Unknow msg'
-                replyMsg = reply.TextMsg(toUser, fromUser, reply_content)
-                return replyMsg.send()
+            str_xml = web.data()
+            xml = lxml.etr
         except Exception as e:
             return e

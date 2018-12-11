@@ -5,8 +5,15 @@ import web
 from handle import Handle
 
 urls = (
-    '/wx', 'Handle'
+    '/wx', 'Handle',
+    '/', 'Hello'
 )
+
+
+class Hello:
+    def Get(self):
+        return 'Hello world.\nPower by python.'
+
 
 if __name__ == '__main__':
     app = web.application(urls, globals())
