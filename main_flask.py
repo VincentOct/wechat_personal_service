@@ -41,9 +41,10 @@ def wechat_check():
         FromUserName = xml_recv.find("FromUserName").text
         Content = xml_recv.find("Content").text
         print(ToUserName, FromUserName, Content)
+        return make_response('response test')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',port=80)
 
 
