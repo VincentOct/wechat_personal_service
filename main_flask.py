@@ -37,14 +37,25 @@ def wechat_check():
     if request.method == 'POST':
         print(request.data)
         xml_recv = ET.fromstring(request.data)
-        ToUserName = xml_recv.find("ToUserName").text
-        FromUserName = xml_recv.find("FromUserName").text
-        Content = xml_recv.find("Content").text
-        print(ToUserName, FromUserName, Content)
-        return make_response('response test')
+        to_user = xml_recv.find("ToUserName").text
+        from_user = xml_recv.find("FromUserName").text
+        content = xml_recv.find("Content").text
+        print(to_user, from_user, content)
+        reply_str = """<xml> 
+        <ToUserName>< ![CDATA[{to_user}] ]></ToUserName> 
+        <FromUserName>< ![CDATA[{from_user}] ]></FromUserName> 
+        <CreateTime>{createtime}</CreateTime> 
+        <MsgType>< ![CDATA[text] ]></MsgType> 
+        <Content>< ![CDATA[{content}] ]></Content> 
+        </xml>"""
+        reply_xml = reply_str.format(to_user=from_user, from_user=to_user,
+                                     createtime=int(time.time()), content=content)
+        response = make_response(reply_xml)
+        response.content_type = 'application/xml'
+        return response
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=80)
+    app.run(host='0.0.0.0', port=80)
 
 
