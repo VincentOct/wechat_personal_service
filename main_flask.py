@@ -37,7 +37,9 @@ def wechat_check():
             return None
     if request.method == 'POST':
         xml_recv = ET.fromstring(request.data)
+        print(xml_recv.find("MsgType").text)
         if xml_recv.find("MsgType").text == 'text':
+            print('recieved post msg.')
             to_user = xml_recv.find("ToUserName").text
             from_user = xml_recv.find("FromUserName").text
             come_content = xml_recv.find("Content").text
